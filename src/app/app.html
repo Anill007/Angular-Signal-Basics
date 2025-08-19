@@ -1,0 +1,21 @@
+<div class="layout">
+  <section class="form-container">
+    <input type="text" class="search" (input)="search($event)" [value]="searchInput()" placeholder="Search by name">
+  </section>
+  <div *ngIf="emojiList.isLoading(); else showList">Loading...</div>
+  <ng-template #showList>
+    <section class="results-container">
+      <section *ngIf="filteredList() as emojis" class="emojis-container">
+        <div *ngIf="!emojis.length">
+          No match found.
+        </div>
+        <div *ngFor="let e of emojis" class="emoji-card">
+          <div class="emoji-placeholder" [innerHTML]="e.htmlCode[0]"></div>
+          <div class="emoji-detail">
+            {{e.name}}
+          </div>
+        </div>
+      </section>
+    </section>
+  </ng-template>
+</div>
