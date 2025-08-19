@@ -5,16 +5,18 @@
   <div *ngIf="emojiList.isLoading(); else showList">Loading...</div>
   <ng-template #showList>
     <section class="results-container">
-      <section *ngIf="filteredList() as emojis" class="emojis-container">
-        <div *ngIf="!emojis.length">
-          No match found.
-        </div>
-        <div *ngFor="let e of emojis" class="emoji-card">
-          <div class="emoji-placeholder" [innerHTML]="e.htmlCode[0]"></div>
-          <div class="emoji-detail">
-            {{e.name}}
-          </div>
-        </div>
+      <section *ngFor="let entries of groupedEmojisEntries" class="emojis-group">
+        <h1>{{entries[0]}}</h1>
+        <section *ngIf="groupedEmojis() as emojis" class="emojis-container">
+          <section *ngFor="let emoji of entries[1]" class="emoji-card">
+            <div class="card-border">
+              <div class="emoji-placeholder" [innerHTML]="emoji.htmlCode[0] + (emoji.htmlCode[1] ?? '')"></div>
+              <div class="emoji-detail">
+                {{emoji.name}}
+              </div>
+            </div>
+          </section>
+        </section>
       </section>
     </section>
   </ng-template>
