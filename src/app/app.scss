@@ -17,19 +17,18 @@
 }
 
 .emojis-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  row-gap: 16px;
-  column-gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
   height: fit-content;
 }
 
 .emoji-card {
-  border: 1px solid red;
   border-radius: 4px;
   padding: 8px 12px;
   cursor: pointer;
   height: auto;
+  flex: 0 1 25%;
+  padding: 16px;
 }
 
 .emoji-placeholder {
@@ -45,6 +44,7 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .search {
@@ -54,4 +54,11 @@
 .results-container {
   height: 100%;
   overflow: auto;
+  flex: 1 1 auto;
 }
+
+.card-border {
+  border: 1px solid red;
+  border-radius: 8px;
+}
+
