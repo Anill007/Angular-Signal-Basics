@@ -1,0 +1,57 @@
+.layout {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  padding: 24px;
+}
+
+.form-container {
+  flex: 0 0 25%;
+  border: 1px solid green;
+  border-radius: 8px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.emojis-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 16px;
+  column-gap: 16px;
+  height: fit-content;
+}
+
+.emoji-card {
+  border: 1px solid red;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  height: auto;
+}
+
+.emoji-placeholder {
+  text-align: center;
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.emoji-detail {
+  text-align: center;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.search {
+  width: 100%;
+}
+
+.results-container {
+  height: 100%;
+  overflow: auto;
+}
