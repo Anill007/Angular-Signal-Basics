@@ -48,7 +48,7 @@ export class App {
     });
 
     effect(() => {
-      console.log(this.groupedEmojis());
+      console.log(this.groupedEmojis(), this.filteredCategories(), this.filteredList());
     })
   }
 
