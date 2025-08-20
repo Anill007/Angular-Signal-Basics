@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal, effect, computed, Signal } from '@angular/core';
+import { Component, inject, signal, WritableSignal, effect, computed, Signal, linkedSignal } from '@angular/core';
 import { EmojisResource } from './service/emojis-resource';
 import { JsonPipe, NgFor, NgIf } from '@angular/common';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
@@ -6,7 +6,7 @@ import { debounce, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [NgIf, NgFor, JsonPipe],
+  imports: [NgIf, NgFor],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -30,6 +30,10 @@ export class App {
     const categories = this.filteredList().map((emoji) => emoji.category);
     return [...new Set(categories)];
   });
+  protected groupFilter: WritableSignal<string> = linkedSignal({
+    source: this.filteredList,
+    computation: () => 'All'
+  });
   protected groupedEmojis = computed(() => {
     const groupedData: Record<string, any[]> = {};
     this.filteredList().forEach((emojiData) => {
@@ -47,16 +51,30 @@ export class App {
       initialValue: '',
     });
 
-    effect(() => {
-      console.log(this.groupedEmojis(), this.filteredCategories(), this.filteredList());
-    })
+    // effect(() => {
+    //   this.filteredList(),
+    //   this.groupFilter.set('All');
+    // })
   }
 
   protected search(searchEvent: Event) {
     this.searchInput.set((searchEvent.target as HTMLInputElement).value);
   }
 
+  protected onFilterChange(searchEvent: Event) {
+    const value = (searchEvent.target as HTMLInputElement).value;
+    this.groupFilter.set(value);
+  }
+
   get groupedEmojisEntries(): [string, any][] {
     return Object.entries(this.groupedEmojis());
+  }
+
+  protected copyToClipboard(emojiCode: []) {
+    navigator.clipboard.writeText(emojiCode.join('')).then(() => {
+      alert('Copied Successfully!')
+    }).catch(() => {
+      alert('Something went wrong!')
+    })
   }
 }
