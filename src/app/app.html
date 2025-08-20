@@ -1,23 +1,38 @@
 <div class="layout">
   <section class="form-container">
     <input type="text" class="search" (input)="search($event)" [value]="searchInput()" placeholder="Search by name">
+    <div class="filter-container" *ngIf="groupFilter()">
+      <h1>Filter</h1>
+      <div class="select-items">
+        <label for="group" class="choose-label">Choose a group:</label>
+        <select name="group" id="group" (change)="onFilterChange($event)">
+          <option [value]="'All'" [selected]="groupFilter() === 'All'">All</option>
+          <ng-container *ngFor="let dropOptions of filteredCategories()">
+            <option [value]="dropOptions" [selected]="groupFilter() === dropOptions">{{dropOptions}}</option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
   </section>
   <div *ngIf="emojiList.isLoading(); else showList">Loading...</div>
   <ng-template #showList>
     <section class="results-container">
-      <section *ngFor="let entries of groupedEmojisEntries" class="emojis-group">
-        <h1>{{entries[0]}}</h1>
-        <section *ngIf="groupedEmojis() as emojis" class="emojis-container">
-          <section *ngFor="let emoji of entries[1]" class="emoji-card">
-            <div class="card-border">
-              <div class="emoji-placeholder" [innerHTML]="emoji.htmlCode[0] + (emoji.htmlCode[1] ?? '')"></div>
-              <div class="emoji-detail">
-                {{emoji.name}}
+      <ng-container *ngFor="let entries of groupedEmojisEntries">
+        <section  class="emojis-group" *ngIf="groupFilter() === 'All' || groupFilter() === entries[0]">
+          <h1 class="title">{{entries[0]}}</h1>
+          <hr>
+          <section *ngIf="groupedEmojis() as emojis" class="emojis-container">
+            <section *ngFor="let emoji of entries[1]" class="emoji-card" [title]="emoji.name">
+              <div class="card-border" (click)="copyToClipboard(emoji.htmlCode)">
+                <div class="emoji-placeholder" [innerHTML]="emoji.htmlCode[0] + (emoji.htmlCode[1] ?? '')"></div>
+                <div class="emoji-detail">
+                  {{emoji.name}}
+                </div>
               </div>
-            </div>
+            </section>
           </section>
         </section>
-      </section>
+      </ng-container>
     </section>
   </ng-template>
 </div>
